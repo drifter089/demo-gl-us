@@ -3,15 +3,13 @@ import { createRoot } from "react-dom/client";
 import { Map } from "react-map-gl/maplibre";
 import DeckGL from "@deck.gl/react";
 import { scaleThreshold } from "d3-scale";
-import { _GlobeView } from "deck.gl";
 
 import StaticMap from "react-map-gl";
 import { BASEMAP } from "@deck.gl/carto";
-import { SolidPolygonLayer } from "deck.gl";
+
 import type { Color, Position, PickingInfo, MapViewState } from "@deck.gl/core";
 import type { Feature, Geometry, GeoJSON } from "geojson";
 import { MyCustomLayers } from "./Layer";
-import { GeoJsonLayer, PolygonLayer, ScatterplotLayer } from "@deck.gl/layers";
 
 // Source data GeoJSON
 const DATA_URL =
@@ -95,22 +93,6 @@ export default function App({ mapStyle = MAP_STYLE }: { mapStyle?: string }) {
   //   layers.push(...MyCustomLayers(x.substations, x.buses, x.lines, x.polygon));
   // });
 
-  type BlockProperties = {
-    name: string;
-    coordinates: [longitude: number, latitude: number];
-  };
-
-  // let layers: Array<SolidPolygonLayer | GeoJsonLayer<BlockProperties>> =
-  //   countries.flatMap((country) =>
-  //     MyCustomLayers(
-  //       country.substations,
-  //       country.buses,
-  //       country.lines,
-  //       country.polygon,
-  //       country.id
-  //     )
-  //   );
-
   const layers = countries.flatMap((country) =>
     MyCustomLayers(
       country.substations,
@@ -121,36 +103,9 @@ export default function App({ mapStyle = MAP_STYLE }: { mapStyle?: string }) {
     )
   );
 
-  // layers.push(
-  //   new SolidPolygonLayer({
-  //     id: "background",
-  //     data: [
-  //       [
-  //         [-180, 90],
-  //         [0, 90],
-  //         [180, 90],
-  //         [180, -90],
-  //         [0, -90],
-  //         [-180, -90],
-  //       ],
-  //     ],
-  //     getPolygon: (d) => d,
-  //     elevationScale: -0.1,
-  //     extruded: true,
-  //     stroked: false,
-  //     filled: true,
-  //     getFillColor: [40, 40, 40],
-  //   })
-  // );
-
   return (
     <DeckGL
       layers={layers}
-      // views={
-      //   new _GlobeView({
-      //     resolution: 10,
-      //   })
-      // }
       // effects={effects}
       initialViewState={INITIAL_VIEW_STATE}
       controller={true}
